@@ -1,0 +1,5 @@
+# 브리핑 원본 파일은 GitHub에 올리지 않음
+input/
+
+# macOS
+.DS_Store

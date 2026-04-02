@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>기름값이 심상치 않다 — 이번 주 글로벌 경제 브리핑</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      line-height: 1.7;
+    }
+
+    /* ── Header ── */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #163050 100%);
+      color: white;
+      padding: 60px 24px 48px;
+      text-align: center;
+    }
+    .hero .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      font-size: 13px;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+      letter-spacing: 0.05em;
+    }
+    .hero h1 {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
+      line-height: 1.3;
+      max-width: 680px;
+      margin: 0 auto 16px;
+    }
+    .hero .sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── KPI Cards ── */
+    .kpi-section {
+      background: #fff;
+      padding: 40px 24px;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .kpi-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 20px 16px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .kpi-card:hover { transform: translateY(-2px); }
+    .kpi-card .label {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .kpi-card .value {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .kpi-card .delta {
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 6px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+    .up   { color: #dc2626; background: #fee2e2; }
+    .down { color: #16a34a; background: #dcfce7; }
+    .flat { color: #d97706; background: #fef3c7; }
+    .kpi-card.accent-oil   .value { color: #dc2626; }
+    .kpi-card.accent-china .value { color: #2563eb; }
+    .kpi-card.accent-warn  .value { color: #d97706; }
+
+    /* ── Content wrapper ── */
+    .content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+    }
+
+    /* ── Section titles ── */
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin: 48px 0 20px;
+    }
+
+    /* ── Chart cards ── */
+    .chart-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .chart-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+    .chart-card .chart-desc {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+    .chart-wrap {
+      position: relative;
+      height: 220px;
+    }
+    .chart-wrap-tall {
+      position: relative;
+      height: 260px;
+    }
+
+    /* ── Two-col layout ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* ── Narrative blocks ── */
+    .story-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .story-card h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .story-card h2 .num {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: #0f172a;
+      color: white;
+      font-size: 13px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .story-card p { font-size: 15px; color: #374151; margin-bottom: 10px; }
+    .story-card p:last-child { margin-bottom: 0; }
+
+    /* ── Highlight bar ── */
+    .highlight {
+      border-left: 4px solid #dc2626;
+      background: #fff5f5;
+      padding: 16px 20px;
+      border-radius: 0 10px 10px 0;
+      margin: 16px 0;
+      font-size: 15px;
+      color: #1a1a1a;
+    }
+    .highlight.blue {
+      border-left-color: #2563eb;
+      background: #eff6ff;
+    }
+
+    /* ── Summary ── */
+    .summary-box {
+      background: #0f172a;
+      color: white;
+      border-radius: 16px;
+      padding: 32px 28px;
+      margin-top: 40px;
+      text-align: center;
+    }
+    .summary-box .label { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; }
+    .summary-box blockquote { font-size: 18px; font-weight: 700; line-height: 1.6; color: rgba(255,255,255,0.95); }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="tag">📊 주간 글로벌 경제 브리핑 · 2026년 4월 2일</div>
+  <h1>기름값이 심상치 않다<br>이번 주 글로벌 경제에서 꼭 알아야 할 3가지</h1>
+  <p class="sub">호르무즈 해협 봉쇄 → 유가 급등 → 인플레이션 재점화 → 성장 둔화</p>
+</section>
+
+<!-- ══ KPI CARDS ══ -->
+<section class="kpi-section">
+  <div class="kpi-grid">
+    <div class="kpi-card accent-oil">
+      <div class="label">브렌트유</div>
+      <div class="value">$107<span style="font-size:18px">.38</span></div>
+      <div class="delta up">▲ +3.83%</div>
+    </div>
+    <div class="kpi-card accent-warn">
+      <div class="label">미국 실업률</div>
+      <div class="value">4.4<span style="font-size:18px">%</span></div>
+      <div class="delta up">▲ 상승</div>
+    </div>
+    <div class="kpi-card accent-warn">
+      <div class="label">유로존 인플레이션</div>
+      <div class="value">2.5<span style="font-size:18px">%</span></div>
+      <div class="delta up">▲ +0.6%p</div>
+    </div>
+    <div class="kpi-card accent-warn">
+      <div class="label">G20 인플레이션 전망</div>
+      <div class="value">4.0<span style="font-size:18px">%</span></div>
+      <div class="delta up">▲ +1.2%p</div>
+    </div>
+    <div class="kpi-card accent-china">
+      <div class="label">중국 수출 증가율</div>
+      <div class="value">+21.8<span style="font-size:18px">%</span></div>
+      <div class="delta down">↑ 예상치 3배</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">S&P 500</div>
+      <div class="value" style="font-size:20px;color:#dc2626;">5주 연속</div>
+      <div class="delta up">▼ 하락</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MAIN CONTENT ══ -->
+<div class="content">
+
+  <!-- 차트 섹션 -->
+  <p class="section-title">주요 지표 시각화</p>
+
+  <!-- 유가 변동 + 금리 -->
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>🛢 브렌트유 가격 추이</h3>
+      <p class="chart-desc">배럴당 달러 기준 (3월 중순~4월 초)</p>
+      <div class="chart-wrap">
+        <canvas id="oilChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>🏦 주요국 기준금리 비교</h3>
+      <p class="chart-desc">현재 기준 (%)</p>
+      <div class="chart-wrap">
+        <canvas id="rateChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- 인플레이션 비교 -->
+  <div class="chart-card">
+    <h3>📈 인플레이션 변화 — 전달 대비</h3>
+    <p class="chart-desc">에너지 충격으로 유로존 물가 한 달 만에 0.6%p 급등, G20 전망치도 1.2%p 상향</p>
+    <div class="chart-wrap-tall">
+      <canvas id="inflationChart"></canvas>
+    </div>
+  </div>
+
+  <!-- 중국 수출 + 성장률 -->
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>🇨🇳 중국 수출 증가율</h3>
+      <p class="chart-desc">1~2월 실제 vs 시장 예상 (%)</p>
+      <div class="chart-wrap">
+        <canvas id="chinaChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>🌐 2026년 성장률 전망</h3>
+      <p class="chart-desc">주요국 GDP 성장률 예상치 (%)</p>
+      <div class="chart-wrap">
+        <canvas id="gdpChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- 핵심 3가지 텍스트 -->
+  <p class="section-title">이번 주 핵심 3가지</p>
+
+  <div class="story-card">
+    <h2><span class="num">1</span>호르무즈 해협이 막혔다 — 에너지 위기의 진원지</h2>
+    <p>전 세계 원유의 20%, LNG의 21%가 통과하는 호르무즈 해협이 사실상 봉쇄됐습니다. 미국·이스라엘과 이란의 군사 충돌 여파입니다. 카타르의 주요 LNG 생산 시설까지 피해를 입으면서, 에너지 공급이 최대 5년간 줄어들 수 있다는 전망도 나오고 있습니다.</p>
+    <div class="highlight">원유값 급등은 단순히 주유소 가격 문제가 아닙니다. 물류비·제조원가·난방비가 연쇄적으로 오르면서 전반적인 물가 상승으로 이어집니다. OECD는 G20 전체 인플레이션이 당초 전망보다 1.2%p 높은 4.0%에 달할 수 있다고 경고했습니다.</div>
+  </div>
+
+  <div class="story-card">
+    <h2><span class="num">2</span>미국 경제, 두 가지 나쁜 소식이 겹쳤다</h2>
+    <p>미국 연준(Fed)은 지난주 기준금리를 그대로 유지했습니다(3.5~3.75%). 문제는 금리를 내릴 수 있는 상황도 아니라는 점입니다. 물가는 다시 오르고 있고, 동시에 고용 시장은 악화되고 있습니다. 지난달 미국에서 일자리가 약 92,000개 감소했고 실업률은 4.4%로 올랐습니다.</p>
+    <p>금리를 올리자니 경기가 더 식고, 내리자니 물가가 더 오르는 딜레마입니다. 금융시장은 이미 올해 안에 금리 인하 가능성을 사실상 배제하기 시작했습니다. S&P 500 지수는 5주 연속 하락 중입니다.</p>
+  </div>
+
+  <div class="story-card">
+    <h2><span class="num">3</span>유럽은 더 취약하다</h2>
+    <p>유로존은 에너지를 많이 수입하는 지역인 만큼, 에너지 가격 충격에 가장 민감하게 반응합니다. 3월 유로존 인플레이션은 한 달 만에 1.9%에서 2.5%로 급등했고, 성장률 전망은 0.8%로 낮아졌습니다.</p>
+    <div class="highlight blue">그나마 중국은 선방 중입니다. 1~2월 수출이 예상치의 세 배에 가까운 21.8% 증가를 기록했지만, 이것이 2분기까지 이어질지는 미지수입니다.</div>
+  </div>
+
+  <!-- 인사이트 -->
+  <p class="section-title">지금 주목해야 할 것</p>
+  <div class="story-card">
+    <p><strong>4월 중 이란-미국 협상</strong>이 분수령입니다. 협상이 진전되면 유가가 안정되고 현재의 불안감이 상당 부분 해소될 수 있습니다. 반대로 교착 상태가 이어진다면, 높은 물가와 낮은 성장이 동시에 오는 '스태그플레이션'이 현실화될 수 있습니다.</p>
+    <p>투자 관점에서는 에너지·원자재 관련 자산이 강세를 보이는 반면, 기술주와 장기채권은 변동성이 커지고 있습니다.</p>
+  </div>
+
+  <!-- 한 줄 요약 -->
+  <div class="summary-box">
+    <div class="label">한 줄 요약</div>
+    <blockquote>중동발 에너지 충격이 물가를 밀어올리고 성장을 끌어내리면서,<br>세계 경제가 정책 선택지가 없는 난감한 구간에 진입하고 있다.</blockquote>
+  </div>
+
+</div><!-- /content -->
+
+<footer>
+  본 게시물은 공개된 기관 보고서와 뉴스를 바탕으로 작성된 정보 제공 목적의 콘텐츠이며, 투자 조언이 아닙니다.<br>
+  OECD · Fed · ECB · S&P Global · WEF 자료 참조 · 2026-04-02
+</footer>
+
+<script>
+  const FONT = "'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif";
+
+  Chart.defaults.font.family = FONT;
+  Chart.defaults.color = '#64748b';
+
+  /* 1. 유가 추이 */
+  new Chart(document.getElementById('oilChart'), {
+    type: 'line',
+    data: {
+      labels: ['3/17', '3/19', '3/21', '3/24', '3/26', '3/28', '3/30', '4/1', '4/2'],
+      datasets: [{
+        label: '브렌트유 ($/배럴)',
+        data: [88.5, 90.2, 93.8, 97.1, 101.4, 104.7, 106.2, 107.1, 107.38],
+        borderColor: '#dc2626',
+        backgroundColor: 'rgba(220,38,38,0.08)',
+        borderWidth: 2.5,
+        pointRadius: 3,
+        pointBackgroundColor: '#dc2626',
+        fill: true,
+        tension: 0.35
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          min: 80,
+          ticks: { callback: v => '$' + v },
+          grid: { color: '#f1f5f9' }
+        },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  /* 2. 기준금리 비교 */
+  new Chart(document.getElementById('rateChart'), {
+    type: 'bar',
+    data: {
+      labels: ['미국 연준', 'ECB (유럽)', '한국은행'],
+      datasets: [{
+        label: '기준금리 (%)',
+        data: [3.625, 2.15, 2.75],
+        backgroundColor: ['#1e3a5f', '#3b82f6', '#93c5fd'],
+        borderRadius: 8,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          max: 5,
+          ticks: { callback: v => v + '%' },
+          grid: { color: '#f1f5f9' }
+        },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  /* 3. 인플레이션 변화 */
+  new Chart(document.getElementById('inflationChart'), {
+    type: 'bar',
+    data: {
+      labels: ['유로존 (2월→3월)', 'G20 전망 (기존→현재)', '미국 PCE (연준 전망)'],
+      datasets: [
+        {
+          label: '이전',
+          data: [1.9, 2.8, 2.5],
+          backgroundColor: '#cbd5e1',
+          borderRadius: 6,
+          borderSkipped: false
+        },
+        {
+          label: '현재/수정',
+          data: [2.5, 4.0, 2.7],
+          backgroundColor: ['#dc2626', '#f97316', '#d97706'],
+          borderRadius: 6,
+          borderSkipped: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { usePointStyle: true, boxWidth: 8 }
+        }
+      },
+      scales: {
+        y: {
+          ticks: { callback: v => v + '%' },
+          grid: { color: '#f1f5f9' }
+        },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  /* 4. 중국 수출 */
+  new Chart(document.getElementById('chinaChart'), {
+    type: 'bar',
+    data: {
+      labels: ['시장 예상치', '실제 증가율'],
+      datasets: [{
+        data: [7.1, 21.8],
+        backgroundColor: ['#cbd5e1', '#2563eb'],
+        borderRadius: 10,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ' ' + ctx.raw + '%' } }
+      },
+      scales: {
+        x: {
+          ticks: { callback: v => v + '%' },
+          grid: { color: '#f1f5f9' }
+        },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+
+  /* 5. GDP 전망 */
+  new Chart(document.getElementById('gdpChart'), {
+    type: 'bar',
+    data: {
+      labels: ['중국', '글로벌', '미국', '유로존', '독일', '프랑스'],
+      datasets: [{
+        label: '2026 성장률 전망 (%)',
+        data: [4.8, 2.9, 1.8, 0.8, 0.8, 0.8],
+        backgroundColor: v => {
+          const colors = ['#2563eb','#475569','#64748b','#f97316','#fb923c','#fbbf24'];
+          return colors[v.dataIndex];
+        },
+        borderRadius: 8,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          ticks: { callback: v => v + '%' },
+          grid: { color: '#f1f5f9' }
+        },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
