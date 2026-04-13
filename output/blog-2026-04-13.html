@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>호르무즈 봉쇄 개시 — 글로벌 경제 위클리 브리프 2026.04.13</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --red: #dc2626;
+    --green: #16a34a;
+    --neutral: #475569;
+    --bg: #0f172a;
+    --card: #1e293b;
+    --border: #334155;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --accent: #fbbf24;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif; line-height:1.7; }
+  a { color:var(--accent); text-decoration:none; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(145deg, #0a1628 0%, #0f2d52 60%, #1a0a1f 100%);
+    padding: 64px 24px 48px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content:'';
+    position:absolute; top:-200px; right:-200px;
+    width:600px; height:600px; border-radius:50%;
+    border:1px solid rgba(255,255,255,0.05);
+  }
+  .alert-badge {
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(220,38,38,0.2); border:1px solid rgba(220,38,38,0.5);
+    border-radius:24px; padding:6px 18px; margin-bottom:24px;
+    font-size:13px; color:#fca5a5; font-weight:700; letter-spacing:0.06em;
+  }
+  .alert-dot { width:7px; height:7px; border-radius:50%; background:#dc2626; animation:pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero h1 { font-size:clamp(24px,4vw,42px); font-weight:800; line-height:1.25; margin-bottom:16px; }
+  .hero h1 em { font-style:normal; color:var(--accent); }
+  .hero .sub { font-size:16px; color:var(--muted); max-width:680px; margin:0 auto 20px; }
+  .hero .date-tag { font-size:13px; color:var(--muted); }
+
+  /* Container */
+  .container { max-width:1100px; margin:0 auto; padding:40px 24px; }
+
+  /* Section title */
+  .section-title {
+    font-size:13px; font-weight:700; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--muted);
+    margin-bottom:20px; display:flex; align-items:center; gap:10px;
+  }
+  .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  /* KPI Grid */
+  .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:48px; }
+  .kpi-card {
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:20px 16px; text-align:center;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .kpi-card:hover { transform:translateY(-2px); border-color:#475569; }
+  .kpi-label { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+  .kpi-value { font-size:28px; font-weight:800; line-height:1; margin-bottom:8px; }
+  .kpi-badge { font-size:12px; font-weight:700; padding:3px 10px; border-radius:10px; display:inline-block; }
+  .badge-red { color:#fca5a5; background:rgba(220,38,38,0.2); }
+  .badge-green { color:#86efac; background:rgba(22,163,74,0.2); }
+  .badge-amber { color:#fde68a; background:rgba(217,119,6,0.2); }
+  .badge-neutral { color:#cbd5e1; background:rgba(71,85,105,0.3); }
+  .kpi-card.danger { border-color:rgba(220,38,38,0.4); }
+  .kpi-card.positive { border-color:rgba(22,163,74,0.3); }
+
+  /* Charts Grid */
+  .charts-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:24px; margin-bottom:48px; }
+  .chart-card {
+    background:var(--card); border:1px solid var(--border); border-radius:14px; padding:24px;
+  }
+  .chart-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:4px; }
+  .chart-sub { font-size:12px; color:var(--muted); margin-bottom:20px; }
+  .chart-wrap { position:relative; height:220px; }
+
+  /* Insights */
+  .insights-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; margin-bottom:48px; }
+  .insight-card {
+    background:var(--card); border:1px solid var(--border); border-radius:14px; padding:24px;
+  }
+  .insight-num {
+    width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:800; margin-bottom:14px;
+    background:rgba(220,38,38,0.15); color:#fca5a5; border:1px solid rgba(220,38,38,0.3);
+  }
+  .insight-title { font-size:16px; font-weight:700; margin-bottom:8px; }
+  .insight-body { font-size:14px; color:var(--muted); line-height:1.7; }
+  .insight-quote {
+    margin-top:14px; padding:12px 16px;
+    background:rgba(251,191,36,0.07); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; font-size:13px; color:#fde68a; line-height:1.6;
+  }
+
+  /* Summary Table */
+  .table-card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:48px; }
+  table { width:100%; border-collapse:collapse; }
+  th { background:#263347; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); padding:14px 18px; text-align:left; }
+  td { padding:14px 18px; font-size:14px; border-top:1px solid var(--border); vertical-align:top; }
+  tr:hover td { background:rgba(255,255,255,0.02); }
+  .tag-short { font-size:11px; font-weight:700; padding:3px 9px; border-radius:8px; display:inline-block; margin:2px; background:rgba(220,38,38,0.15); color:#fca5a5; }
+  .tag-mid { font-size:11px; font-weight:700; padding:3px 9px; border-radius:8px; display:inline-block; margin:2px; background:rgba(217,119,6,0.15); color:#fde68a; }
+
+  /* Final Summary */
+  .summary-box {
+    background:linear-gradient(135deg,rgba(220,38,38,0.1),rgba(15,45,82,0.6));
+    border:1px solid rgba(220,38,38,0.3); border-radius:16px; padding:32px;
+    text-align:center; margin-bottom:40px;
+  }
+  .summary-box .label { font-size:12px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fca5a5; margin-bottom:14px; }
+  .summary-box .quote { font-size:18px; font-weight:700; color:var(--text); line-height:1.5; }
+
+  /* Keywords */
+  .keywords { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:48px; }
+  .kw { background:rgba(71,85,105,0.3); border:1px solid var(--border); border-radius:20px; padding:6px 16px; font-size:13px; font-weight:600; color:var(--muted); }
+
+  /* Footer */
+  footer { border-top:1px solid var(--border); padding:24px; text-align:center; font-size:12px; color:var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="alert-badge"><div class="alert-dot"></div>속보 반영 · 2026.04.13</div>
+  <h1>호르무즈 봉쇄 개시<br><em>세계 경제, 새로운 국면</em></h1>
+  <p class="sub">미-이란 협상 결렬 · 미 해군 봉쇄 공식 개시 · 유가 102달러 돌파<br>스태그플레이션 삼중 압박과 금융시장 충격</p>
+  <p class="date-tag">글로벌 경제 위클리 브리프 · 2026년 4월 6~12일 핵심 이슈</p>
+</div>
+
+<div class="container">
+
+  <!-- KPI Section -->
+  <div class="section-title">주요 지표 스냅샷</div>
+  <div class="kpi-grid">
+    <div class="kpi-card danger">
+      <div class="kpi-label">브렌트유</div>
+      <div class="kpi-value" style="color:#fca5a5">$102.29</div>
+      <span class="kpi-badge badge-red">봉쇄 개시 +$7↑</span>
+    </div>
+    <div class="kpi-card danger">
+      <div class="kpi-label">WTI</div>
+      <div class="kpi-value" style="color:#fca5a5">$104.56</div>
+      <span class="kpi-badge badge-red">+$8↑</span>
+    </div>
+    <div class="kpi-card danger">
+      <div class="kpi-label">미국 실효 관세율</div>
+      <div class="kpi-value" style="color:#fde68a">11.0%</div>
+      <span class="kpi-badge badge-amber">1943년 이후 최고</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Fed 기준금리</div>
+      <div class="kpi-value" style="color:#f1f5f9">3.75%</div>
+      <span class="kpi-badge badge-neutral">2회 연속 동결</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">미국 PCE 전망</div>
+      <div class="kpi-value" style="color:#fde68a">2.7%</div>
+      <span class="kpi-badge badge-amber">2.4% → 상향</span>
+    </div>
+    <div class="kpi-card danger">
+      <div class="kpi-label">S&P 500 선물</div>
+      <div class="kpi-value" style="color:#fca5a5">-2%+</div>
+      <span class="kpi-badge badge-red">개장 전 하락</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">세계 GDP 성장 전망</div>
+      <div class="kpi-value" style="color:#fde68a">2.7%</div>
+      <span class="kpi-badge badge-amber">IMF 2026년</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">중국 성장률 목표</div>
+      <div class="kpi-value" style="color:#fde68a">4.5~5%</div>
+      <span class="kpi-badge badge-amber">역대 최저 목표</span>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="section-title">데이터 시각화</div>
+  <div class="charts-grid">
+
+    <div class="chart-card">
+      <div class="chart-title">유가 추이 — 협상·봉쇄 이후</div>
+      <div class="chart-sub">브렌트유 기준 ($/배럴)</div>
+      <div class="chart-wrap"><canvas id="oilChart"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">미국 실효 관세율 변화</div>
+      <div class="chart-sub">2018~2026년 추이 (%)</div>
+      <div class="chart-wrap"><canvas id="tariffChart"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Fed 기준금리 및 PCE 전망</div>
+      <div class="chart-sub">2024~2026년 (%)</div>
+      <div class="chart-wrap"><canvas id="fedChart"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">글로벌 GDP 성장률 전망</div>
+      <div class="chart-sub">IMF 주요국 2026년 (%, 추정)</div>
+      <div class="chart-wrap"><canvas id="gdpChart"></canvas></div>
+    </div>
+
+  </div>
+
+  <!-- Insights -->
+  <div class="section-title">핵심 이슈 분석</div>
+  <div class="insights-grid">
+    <div class="insight-card">
+      <div class="insight-num">1</div>
+      <div class="insight-title">🚨 이란 전쟁 & 에너지 쇼크</div>
+      <div class="insight-body">21시간 마라톤 협상이 결렬됐다. 미국은 핵 포기를, 이란은 자산 해제와 통행료 권한을 요구하며 양측 모두 물러서지 않았다. 미 해군 봉쇄는 4월 13일 오전 공식 개시됐으며, 이란 IRGC는 군사적 대응을 예고했다.</div>
+      <div class="insight-quote">호르무즈 완전 차단 시 브렌트유 $120은 최소치 — 일부 분석가는 $140~$150까지 전망</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">2</div>
+      <div class="insight-title">⚖️ 관세 150일 카운트다운</div>
+      <div class="insight-body">대법원 위헌 판결 이후 행정부는 1974년 무역법 §122로 관세 근거를 바꿨다. 하지만 이 조항에는 150일 시한이 있다. 8~9월이 분기점이다. 의회가 연장하면 무역 긴장 장기화, 만료되면 실효 관세율이 11% → 8.2%로 하락.</div>
+      <div class="insight-quote">제약·반도체·희토류 의존 섹터는 100일 이내 공급망 리스크 시나리오 분석을 서둘러야</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">3</div>
+      <div class="insight-title">🏦 연준 딜레마 — 인상 가능성 부상</div>
+      <div class="insight-body">에너지 충격 + 관세발 물가 + 고용 냉각. 3월 FOMC 의사록에서 금리 인상을 고려하는 위원 수가 늘었다. PCE 전망도 2.4%에서 2.7%로 상향됐다. 스태그플레이션 리스크가 현실화되는 속도가 예상보다 빠르다.</div>
+      <div class="insight-quote">2026년 내 1회 인하 전망 유지 — 그러나 이란 충돌 장기화 시 인상 전환 가능성 급부상</div>
+    </div>
+  </div>
+
+  <!-- Summary Table -->
+  <div class="section-title">테마별 전망 요약</div>
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>테마</th>
+          <th>단기 (즉시~1개월)</th>
+          <th>중기 (1~3개월)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>에너지</strong></td>
+          <td><span class="tag-short">브렌트유 $100~$120</span></td>
+          <td><span class="tag-mid">군사 충돌 시 $140~$150</span></td>
+        </tr>
+        <tr>
+          <td><strong>인플레이션</strong></td>
+          <td><span class="tag-short">CPI 4%+ 가능성</span></td>
+          <td><span class="tag-mid">Fed 인상 전환 현실화</span></td>
+        </tr>
+        <tr>
+          <td><strong>금융시장</strong></td>
+          <td><span class="tag-short">주가 급락·VIX↑</span></td>
+          <td><span class="tag-mid">에너지·방산 강세</span></td>
+        </tr>
+        <tr>
+          <td><strong>무역/관세</strong></td>
+          <td><span class="tag-short">§122 만료 150일 주시</span></td>
+          <td><span class="tag-mid">공급망 재편 가속</span></td>
+        </tr>
+        <tr>
+          <td><strong>중국</strong></td>
+          <td><span class="tag-short">희토류 카드 지속</span></td>
+          <td><span class="tag-mid">부동산·내수 회복 분기점</span></td>
+        </tr>
+        <tr>
+          <td><strong>원화·환율</strong></td>
+          <td><span class="tag-short">원/달러 급등 압력</span></td>
+          <td><span class="tag-mid">경상수지 악화 우려</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Final Summary -->
+  <div class="summary-box">
+    <div class="label">📌 이번 주 핵심 한 줄 요약</div>
+    <div class="quote">"호르무즈 봉쇄 개시로 에너지·인플레이션·금융시장 삼중 충격이 동시에 현실화됐다.<br>지금은 수익 추구보다 리스크 방어가 먼저다."</div>
+  </div>
+
+  <!-- Keywords -->
+  <div class="keywords">
+    <span class="kw">#호르무즈봉쇄</span>
+    <span class="kw">#스태그플레이션</span>
+    <span class="kw">#유가급등</span>
+    <span class="kw">#Fed금리인상가능성</span>
+    <span class="kw">#관세150일</span>
+    <span class="kw">#희토류수출제한</span>
+    <span class="kw">#원화약세</span>
+    <span class="kw">#공급망비상계획</span>
+  </div>
+
+</div>
+
+<footer>
+  <p>본 콘텐츠는 공개된 뉴스 및 보고서를 기반으로 작성된 정보성 콘텐츠입니다. 투자 결정 시 전문가 자문을 반드시 병행하시기 바랍니다.</p>
+  <p style="margin-top:8px;"><a href="https://scribble26.netlify.app">scribble26.netlify.app</a> · 글로벌 경제 위클리 브리프 2026.04.13</p>
+</footer>
+
+<script>
+const chartDefaults = {
+  plugins: { legend: { labels: { color: '#94a3b8', font: { size: 12 } } } },
+  scales: {
+    x: { ticks: { color: '#64748b' }, grid: { color: 'rgba(71,85,105,0.2)' } },
+    y: { ticks: { color: '#64748b' }, grid: { color: 'rgba(71,85,105,0.2)' } }
+  }
+};
+
+// 1. 유가 차트
+new Chart(document.getElementById('oilChart'), {
+  type: 'line',
+  data: {
+    labels: ['협상 이전', '휴전 발표', '협상 진행', '협상 결렬', '봉쇄 개시'],
+    datasets: [{
+      label: '브렌트유 ($/배럴)',
+      data: [98, 91, 94, 97, 102.29],
+      borderColor: '#dc2626',
+      backgroundColor: 'rgba(220,38,38,0.08)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: ['#475569','#16a34a','#475569','#f97316','#dc2626'],
+      pointRadius: 5
+    }]
+  },
+  options: { ...chartDefaults, responsive: true, maintainAspectRatio: false }
+});
+
+// 2. 관세율 차트
+new Chart(document.getElementById('tariffChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2018', '2019', '2020', '2022', '2024', '2026'],
+    datasets: [{
+      label: '실효 관세율 (%)',
+      data: [2.0, 3.5, 3.7, 2.9, 5.8, 11.0],
+      backgroundColor: ['#475569','#475569','#475569','#475569','#f97316','#dc2626'],
+      borderRadius: 6
+    }]
+  },
+  options: { ...chartDefaults, responsive: true, maintainAspectRatio: false }
+});
+
+// 3. Fed 금리 차트
+new Chart(document.getElementById('fedChart'), {
+  type: 'line',
+  data: {
+    labels: ['2024 Q1', '2024 Q3', '2025 Q1', '2025 Q3', '2026 Q1', '현재'],
+    datasets: [
+      {
+        label: '기준금리 (%)',
+        data: [5.25, 5.00, 4.25, 3.75, 3.75, 3.75],
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59,130,246,0.05)',
+        fill: true,
+        tension: 0.3
+      },
+      {
+        label: 'PCE 전망 (%)',
+        data: [null, null, null, null, 2.4, 2.7],
+        borderColor: '#fbbf24',
+        backgroundColor: 'rgba(251,191,36,0.05)',
+        fill: false,
+        borderDash: [5,5],
+        tension: 0.3
+      }
+    ]
+  },
+  options: { ...chartDefaults, responsive: true, maintainAspectRatio: false }
+});
+
+// 4. GDP 차트
+new Chart(document.getElementById('gdpChart'), {
+  type: 'bar',
+  data: {
+    labels: ['세계', '미국', '중국', '유로존', '일본', '한국'],
+    datasets: [{
+      label: 'GDP 성장률 전망 (%)',
+      data: [2.7, 1.8, 4.7, 1.2, 0.8, 2.1],
+      backgroundColor: [
+        '#475569', '#3b82f6', '#dc2626', '#475569', '#475569', '#16a34a'
+      ],
+      borderRadius: 6
+    }]
+  },
+  options: { ...chartDefaults, responsive: true, maintainAspectRatio: false }
+});
+</script>
+</body>
+</html>
