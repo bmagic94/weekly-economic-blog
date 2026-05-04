@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<style>
+  * { margin:0;padding:0;box-sizing:border-box; }
+  body { width:1080px;height:1080px;overflow:hidden;
+         font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif; }
+  .wrap { width:1080px;height:1080px;position:relative;display:flex;flex-direction:column;
+          align-items:center;justify-content:center;text-align:center;
+          background:linear-gradient(145deg,#0a1628 0%,#0f2d52 60%,#0a1f3d 100%);
+          overflow:hidden;padding:64px;gap:0; }
+  /* 배경 장식 원 */
+  .c1{position:absolute;width:680px;height:680px;border-radius:50%;border:1px solid rgba(255,255,255,0.05);top:-220px;right:-180px;}
+  .c2{position:absolute;width:400px;height:400px;border-radius:50%;border:1px solid rgba(255,255,255,0.04);bottom:-120px;left:-100px;}
+  .c3{position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(37,99,235,0.09);bottom:120px;right:-40px;}
+  /* 상단 태그 */
+  .tag{display:inline-flex;align-items:center;gap:9px;background:rgba(220,38,38,0.18);border:1px solid rgba(220,38,38,0.4);border-radius:24px;padding:8px 22px;margin-bottom:40px;}
+  .tag .dot{width:7px;height:7px;border-radius:50%;background:#dc2626;flex-shrink:0;}
+  .tag span{font-size:15px;color:#fca5a5;font-weight:600;letter-spacing:0.07em;}
+  /* 타이틀 */
+  h1{font-size:76px;font-weight:800;color:#fff;line-height:1.15;letter-spacing:-0.03em;margin-bottom:24px;}
+  h1 em{font-style:normal;color:#fbbf24;display:block;}
+  /* 부제 */
+  .sub{font-size:20px;color:rgba(255,255,255,0.45);line-height:1.65;margin-bottom:52px;max-width:700px;}
+  /* 구분선 */
+  .divider{width:48px;height:3px;background:linear-gradient(90deg,#dc2626,#f97316);border-radius:2px;margin:0 auto 52px;}
+  /* 스탯 */
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;width:100%;}
+  .sc{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:24px 20px;text-align:center;}
+  .sl{font-size:12px;color:rgba(255,255,255,0.4);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;}
+  .sv{font-size:34px;font-weight:800;color:#fff;line-height:1;margin-bottom:10px;}
+  .sd{font-size:13px;font-weight:700;padding:4px 12px;border-radius:12px;display:inline-block;}
+  .red{color:#fca5a5;background:rgba(220,38,38,0.25);}
+  .green{color:#86efac;background:rgba(22,163,74,0.25);}
+  .amber{color:#fde68a;background:rgba(217,119,6,0.25);}
+  /* 하단 URL */
+  .logo{position:absolute;bottom:32px;left:0;right:0;text-align:center;font-size:13px;color:rgba(255,255,255,0.18);letter-spacing:0.05em;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="c1"></div><div class="c2"></div><div class="c3"></div>
+  <div class="tag"><div class="dot"></div><span>주간 글로벌 경제 브리핑 · 2026.05.04</span></div>
+  <h1>프로젝트 프리덤<br>시작됐다<br><em>호르무즈 분기점</em></h1>
+  <p class="sub">미 해군 호르무즈 진입 · 이란 충돌 여부가<br>2026년 유가·금리·시장 경로를 결정한다</p>
+  <div class="divider"></div>
+  <div class="stats">
+    <div class="sc"><div class="sl">브렌트 유가</div><div class="sv">$111</div><span class="sd red">↑ +16.8%</span></div>
+    <div class="sc"><div class="sl">KOSPI</div><div class="sv">6,691</div><span class="sd green">역대 최고</span></div>
+    <div class="sc"><div class="sl">Gold</div><div class="sv">$4,850</div><span class="sd amber">신고가 근접</span></div>
+  </div>
+  <div class="logo">scribble26.netlify.app</div>
+</div>
+</body>
+</html>
