@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<style>
+  * { margin:0;padding:0;box-sizing:border-box; }
+  body { width:1080px;height:1080px;overflow:hidden;
+         font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif; }
+  .wrap { width:1080px;height:1080px;position:relative;display:flex;flex-direction:column;
+          align-items:center;justify-content:center;text-align:center;
+          background:linear-gradient(145deg,#0d1b2a 0%,#1a3a5c 60%,#0d2340 100%);
+          overflow:hidden;padding:64px;gap:0; }
+  /* 배경 장식 원 */
+  .c1{position:absolute;width:680px;height:680px;border-radius:50%;border:1px solid rgba(255,255,255,0.04);top:-220px;right:-180px;}
+  .c2{position:absolute;width:400px;height:400px;border-radius:50%;border:1px solid rgba(255,255,255,0.03);bottom:-120px;left:-100px;}
+  .c3{position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(99,102,241,0.09);bottom:120px;right:-40px;}
+  /* 상단 태그 */
+  .tag{display:inline-flex;align-items:center;gap:9px;background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.45);border-radius:24px;padding:8px 22px;margin-bottom:40px;}
+  .tag .dot{width:7px;height:7px;border-radius:50%;background:#6366f1;flex-shrink:0;}
+  .tag span{font-size:15px;color:#a5b4fc;font-weight:600;letter-spacing:0.07em;}
+  /* 타이틀 */
+  h1{font-size:74px;font-weight:800;color:#fff;line-height:1.15;letter-spacing:-0.03em;margin-bottom:24px;}
+  h1 em{font-style:normal;color:#fbbf24;display:block;}
+  /* 부제 */
+  .sub{font-size:20px;color:rgba(255,255,255,0.42);line-height:1.65;margin-bottom:52px;max-width:700px;}
+  /* 구분선 */
+  .divider{width:48px;height:3px;background:linear-gradient(90deg,#6366f1,#a855f7);border-radius:2px;margin:0 auto 52px;}
+  /* 스탯 */
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;width:100%;}
+  .sc{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:24px 20px;text-align:center;}
+  .sl{font-size:12px;color:rgba(255,255,255,0.38);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;}
+  .sv{font-size:32px;font-weight:800;color:#fff;line-height:1;margin-bottom:10px;}
+  .sd{font-size:13px;font-weight:700;padding:4px 12px;border-radius:12px;display:inline-block;}
+  .green{color:#86efac;background:rgba(22,163,74,0.25);}
+  .purple{color:#c4b5fd;background:rgba(99,102,241,0.25);}
+  .amber{color:#fde68a;background:rgba(217,119,6,0.25);}
+  /* 하단 URL */
+  .logo{position:absolute;bottom:32px;left:0;right:0;text-align:center;font-size:13px;color:rgba(255,255,255,0.16);letter-spacing:0.05em;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="c1"></div><div class="c2"></div><div class="c3"></div>
+  <div class="tag"><div class="dot"></div><span>한국 반도체 심층 분석 · 2026.05.11</span></div>
+  <h1>삼성 50만원<br>하이닉스 300만원<br><em>AI 슈퍼사이클</em></h1>
+  <p class="sub">HBM 독점 공급 구조 · 수요는 2028년까지 예약 완료<br>지금의 랠리는 중간 지점일 가능성이 높다</p>
+  <div class="divider"></div>
+  <div class="stats">
+    <div class="sc"><div class="sl">삼성 Q1 OP YoY</div><div class="sv">+756%</div><span class="sd green">▲ 57.2조</span></div>
+    <div class="sc"><div class="sl">하이닉스 영업마진</div><div class="sv">72%</div><span class="sd purple">▲ 분기 최고</span></div>
+    <div class="sc"><div class="sl">반도체 수출(4월)</div><div class="sv">$319억</div><span class="sd amber">▲ YoY+173%</span></div>
+  </div>
+  <div class="logo">scribble26.netlify.app</div>
+</div>
+</body>
+</html>

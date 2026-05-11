@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>삼성 50만원, 하이닉스 300만원 — AI 메모리 슈퍼사이클 | 한국 반도체 심층 분석 2026-05-11</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    background: #f0f4f8;
+    color: #1a202c;
+    line-height: 1.7;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(145deg, #0d1b2a 0%, #1a3a5c 55%, #0d2340 100%);
+    color: white;
+    padding: 64px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.04);
+    top: -250px; right: -180px;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 350px; height: 350px;
+    border-radius: 50%;
+    background: rgba(99,102,241,0.07);
+    bottom: -80px; left: -60px;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(99,102,241,0.2);
+    border: 1px solid rgba(99,102,241,0.45);
+    border-radius: 24px;
+    padding: 6px 20px;
+    font-size: 13px;
+    color: #a5b4fc;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 28px;
+  }
+  .hero-tag .dot { width: 7px; height: 7px; border-radius: 50%; background: #6366f1; }
+  .hero h1 {
+    font-size: clamp(22px, 3.8vw, 38px);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .hero h1 em { font-style: normal; color: #fbbf24; }
+  .hero-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,0.52);
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.75;
+  }
+
+  /* ── Layout ── */
+  .container { max-width: 1060px; margin: 0 auto; padding: 48px 24px; }
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-left: 12px;
+    border-left: 3px solid #6366f1;
+  }
+
+  /* ── KPI Cards ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+  .kpi-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    text-align: center;
+  }
+  .kpi-label { font-size: 11px; font-weight: 700; color: #94a3b8; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .kpi-value { font-size: 24px; font-weight: 800; color: #0f172a; line-height: 1; margin-bottom: 8px; }
+  .kpi-sub { font-size: 11px; color: #64748b; margin-bottom: 8px; }
+  .kpi-badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 12px; }
+  .badge-green { background: rgba(22,163,74,0.12); color: #16a34a; }
+  .badge-purple { background: rgba(99,102,241,0.12); color: #6366f1; }
+  .badge-amber { background: rgba(217,119,6,0.12); color: #b45309; }
+  .badge-neutral { background: rgba(71,85,105,0.1); color: #475569; }
+
+  /* ── 2-col company cards ── */
+  .company-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  @media (max-width: 640px) { .company-grid { grid-template-columns: 1fr; } }
+  .company-card {
+    background: white;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .company-card .co-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+  }
+  .co-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800; color: white;
+  }
+  .co-icon.samsung { background: linear-gradient(135deg, #1428A0, #2563eb); }
+  .co-icon.hynix   { background: linear-gradient(135deg, #ea580c, #f97316); }
+  .co-name { font-size: 17px; font-weight: 800; color: #0f172a; }
+  .co-ticker { font-size: 12px; color: #94a3b8; }
+  .co-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 9px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+  }
+  .co-row:last-child { border-bottom: none; }
+  .co-row .label { color: #64748b; }
+  .co-row .val { font-weight: 700; color: #0f172a; }
+  .co-row .val.green { color: #16a34a; }
+  .co-row .val.purple { color: #6366f1; }
+
+  /* ── Charts ── */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  .chart-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .chart-card h3 { font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 16px; }
+  .chart-wrap { position: relative; height: 210px; }
+
+  /* ── Insights ── */
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  .insight-card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .insight-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #0f172a; color: white;
+    font-size: 14px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+  }
+  .insight-card h3 { font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 10px; line-height: 1.4; }
+  .insight-card p { font-size: 14px; color: #475569; line-height: 1.75; }
+
+  /* ── Risk Table ── */
+  .risk-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    margin-bottom: 48px;
+  }
+  .risk-table th {
+    background: #0f172a; color: white;
+    padding: 14px 20px; font-size: 13px; font-weight: 700; text-align: left;
+  }
+  .risk-table td {
+    padding: 14px 20px; font-size: 14px; color: #334155;
+    border-bottom: 1px solid #f1f5f9; vertical-align: top;
+  }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .risk-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 9px; border-radius: 10px; white-space: nowrap;
+  }
+  .rb-high   { background: rgba(220,38,38,0.12); color: #dc2626; }
+  .rb-med    { background: rgba(217,119,6,0.12); color: #b45309; }
+  .rb-low    { background: rgba(71,85,105,0.1); color: #475569; }
+
+  /* ── Scenario boxes ── */
+  .scenario-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  @media (max-width: 640px) { .scenario-wrap { grid-template-columns: 1fr; } }
+  .sc-card {
+    background: white; border-radius: 16px;
+    padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .sc-card h4 { font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 16px; }
+  .sc-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13px;
+  }
+  .sc-row:last-child { border-bottom: none; }
+  .sc-bull { color: #16a34a; font-weight: 800; }
+  .sc-base { color: #475569; font-weight: 800; }
+  .sc-bear { color: #dc2626; font-weight: 800; }
+  .sc-range { color: #0f172a; font-weight: 700; }
+  .sc-prob {
+    font-size: 12px; font-weight: 700; padding: 2px 10px;
+    border-radius: 10px; text-align: center; white-space: nowrap;
+  }
+  .prob-bull { background: rgba(22,163,74,0.12); color: #16a34a; }
+  .prob-base { background: rgba(71,85,105,0.1); color: #475569; }
+  .prob-bear { background: rgba(220,38,38,0.12); color: #dc2626; }
+
+  /* ── Summary box ── */
+  .summary-box {
+    background: linear-gradient(135deg, #0f172a, #1e3a5f);
+    border-radius: 20px;
+    padding: 36px;
+    text-align: center;
+    color: white;
+    margin-bottom: 48px;
+  }
+  .summary-box .quote {
+    font-size: clamp(15px, 2.2vw, 20px);
+    font-weight: 700;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .summary-box .quote em { color: #fbbf24; font-style: normal; }
+  .summary-box .attr { font-size: 13px; color: rgba(255,255,255,0.35); }
+
+  footer {
+    text-align: center; font-size: 12px; color: #94a3b8;
+    padding: 32px 24px; border-top: 1px solid #e2e8f0;
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-tag"><div class="dot"></div>한국 반도체 심층 분석 · 2026.05.11</div>
+  <h1>삼성 <em>50만원</em>, 하이닉스 <em>300만원</em><br>AI 메모리 슈퍼사이클의 끝은 어디인가</h1>
+  <p class="hero-sub">KOSPI +78%의 비밀은 단 두 종목이다. HBM을 독점 공급하는 삼성전자·SK하이닉스의 실적과 주가 전망을 수치로 분석한다.</p>
+</div>
+
+<div class="container">
+
+  <!-- KPI Cards -->
+  <div class="section-title">핵심 지표 스냅샷 (2026. 5. 10 기준)</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">삼성 Q1 영업이익</div>
+      <div class="kpi-value">57.2조</div>
+      <div class="kpi-sub">반도체만 53.7조</div>
+      <span class="kpi-badge badge-green">YoY +756%</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">SK하이닉스 영업마진</div>
+      <div class="kpi-value">72%</div>
+      <div class="kpi-sub">Q1 OP 37.6조</div>
+      <span class="kpi-badge badge-purple">분기 최고</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">삼성 시가총액</div>
+      <div class="kpi-value">1,000조</div>
+      <div class="kpi-sub">5/6 기준</div>
+      <span class="kpi-badge badge-green">한국 최초 $1조</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">삼성 현재가</div>
+      <div class="kpi-value">268,500원</div>
+      <div class="kpi-sub">컨센 목표 314,000</div>
+      <span class="kpi-badge badge-purple">업사이드 +17%</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">하이닉스 현재가</div>
+      <div class="kpi-value">160만원+</div>
+      <div class="kpi-sub">5/6 신고가 경신</div>
+      <span class="kpi-badge badge-purple">업사이드 최대+88%</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">반도체 수출 (4월)</div>
+      <div class="kpi-value">$319억</div>
+      <div class="kpi-sub">3월 $328억</div>
+      <span class="kpi-badge badge-green">YoY +173%</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">HBM 시장 점유</div>
+      <div class="kpi-value">SK 50%+</div>
+      <div class="kpi-sub">삼성 40%+</div>
+      <span class="kpi-badge badge-neutral">마이크론 &lt;10%</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">HBM4 단가</div>
+      <div class="kpi-value">$500~560</div>
+      <div class="kpi-sub">마진 80%+</div>
+      <span class="kpi-badge badge-amber">일반DRAM 대비 5~8배</span>
+    </div>
+  </div>
+
+  <!-- Company Cards -->
+  <div class="section-title">종목별 현황 비교</div>
+  <div class="company-grid">
+    <div class="company-card">
+      <div class="co-header">
+        <div class="co-icon samsung">삼</div>
+        <div><div class="co-name">삼성전자</div><div class="co-ticker">005930 · HBM 추격자 + DRAM 강자</div></div>
+      </div>
+      <div class="co-row"><span class="label">현재가 (5/10)</span><span class="val">268,500원</span></div>
+      <div class="co-row"><span class="label">컨센서스 목표가</span><span class="val green">314,000원 (+17%)</span></div>
+      <div class="co-row"><span class="label">SK증권 목표가</span><span class="val purple">500,000원 (+86%)</span></div>
+      <div class="co-row"><span class="label">Q1 반도체 OP</span><span class="val green">53.7조 (YoY +48배)</span></div>
+      <div class="co-row"><span class="label">HBM4 양산 개시</span><span class="val">2026년 2월 (세계 최초)</span></div>
+      <div class="co-row"><span class="label">단기 레인지</span><span class="val">250,000 ~ 310,000원</span></div>
+      <div class="co-row"><span class="label">투자 성격</span><span class="val">가치+성장 혼합형</span></div>
+    </div>
+    <div class="company-card">
+      <div class="co-header">
+        <div class="co-icon hynix">하</div>
+        <div><div class="co-name">SK하이닉스</div><div class="co-ticker">000660 · HBM 독주자</div></div>
+      </div>
+      <div class="co-row"><span class="label">현재가 (5/6~10)</span><span class="val">~1,600,000~1,650,000원</span></div>
+      <div class="co-row"><span class="label">주요 증권사 목표</span><span class="val green">~2,000,000원 (+25%)</span></div>
+      <div class="co-row"><span class="label">SK증권 목표가</span><span class="val purple">3,000,000원 (+88%)</span></div>
+      <div class="co-row"><span class="label">Q1 영업마진</span><span class="val green">72% (OP 37.6조)</span></div>
+      <div class="co-row"><span class="label">NVIDIA HBM4 점유</span><span class="val">약 70% 공급 예정</span></div>
+      <div class="co-row"><span class="label">단기 레인지</span><span class="val">1,450,000 ~ 1,750,000원</span></div>
+      <div class="co-row"><span class="label">투자 성격</span><span class="val">순수 성장형 (고위험·고수익)</span></div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="section-title">데이터로 보는 한국 반도체</div>
+  <div class="charts-grid">
+
+    <div class="chart-card">
+      <h3>🎯 증권사 목표가 vs 현재가 (삼성전자)</h3>
+      <div class="chart-wrap"><canvas id="samsungTargetChart"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <h3>📤 반도체 수출 월별 추이 (억달러)</h3>
+      <div class="chart-wrap"><canvas id="exportChart"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <h3>🥧 HBM 글로벌 시장 점유율</h3>
+      <div class="chart-wrap"><canvas id="hbmShareChart"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <h3>📈 SK하이닉스 분기 영업이익 (조원)</h3>
+      <div class="chart-wrap"><canvas id="hynixOpChart"></canvas></div>
+    </div>
+
+  </div>
+
+  <!-- Core Insights -->
+  <div class="section-title">핵심 인사이트 3가지</div>
+  <div class="insights-grid">
+    <div class="insight-card">
+      <div class="insight-num">1</div>
+      <h3>지정학과 분리된 AI 메모리 수요 — 한국만 다른 길을 가는 이유</h3>
+      <p>이란 협상과 미·중 관세 불확실성 속에서도 KOSPI가 +78%인 이유는 삼성전자·SK하이닉스 두 종목이 KOSPI 시총의 44%를 차지하기 때문이다. 이들의 핵심 고객인 빅테크 4사(MS·Google·Amazon·Meta)의 HBM 주문은 지정학 이슈와 무관하게 3년 치가 이미 완료됐다. AI 데이터센터 자본지출은 불황을 타지 않는다 — 이것이 한국 증시가 '글로벌 디커플링'을 유지하는 구조적 이유다.</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">2</div>
+      <h3>72% 마진의 비밀 — 가격을 우리가 정한다</h3>
+      <p>SK하이닉스의 72% 영업마진은 애플과 TSMC를 능가한다. HBM 단가는 개당 500~560달러로 일반 DRAM의 5~8배다. 2026년 생산분이 전량 선주문 완료된 상태에서 가격 결정권은 공급자에게 있다. SK하이닉스는 HBM3E 가격을 2026년 주문부터 20% 추가 인상했다. 수요가 공급을 초과하는 구조가 최소 2027년까지 지속된다는 것이 시장 컨센서스다.</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">3</div>
+      <h3>삼성의 역설 — HBM보다 일반 DRAM이 더 벌었다</h3>
+      <p>삼성전자 1분기 실적에서 흥미로운 역설이 발견됐다. HBM 생산에 DRAM 웨이퍼 용량의 25% 이상이 투입되면서 일반 DRAM 공급이 자연스럽게 조여들었고, 결과적으로 일반 DRAM의 이익 기여가 HBM보다 높게 나왔다. 삼성은 HBM과 일반 DRAM, 두 개의 수익 레이어를 동시에 가동하고 있다. HBM 점유율 이슈가 흐리더라도 범용 메모리 회복만으로 주가 하방이 제한되는 이유다.</p>
+    </div>
+  </div>
+
+  <!-- Scenarios -->
+  <div class="section-title">3개월 시나리오별 주가 레인지</div>
+  <div class="scenario-wrap">
+    <div class="sc-card">
+      <h4>삼성전자 (005930)</h4>
+      <div class="sc-row">
+        <span class="sc-bull">🟢 Bull</span>
+        <span class="sc-range">340,000 ~ 400,000원</span>
+        <span class="sc-prob prob-bull">30%</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-base">🟡 Base</span>
+        <span class="sc-range">280,000 ~ 340,000원</span>
+        <span class="sc-prob prob-base">50%</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-bear">🔴 Bear</span>
+        <span class="sc-range">210,000 ~ 260,000원</span>
+        <span class="sc-prob prob-bear">20%</span>
+      </div>
+    </div>
+    <div class="sc-card">
+      <h4>SK하이닉스 (000660)</h4>
+      <div class="sc-row">
+        <span class="sc-bull">🟢 Bull</span>
+        <span class="sc-range">2,000,000 ~ 2,500,000원</span>
+        <span class="sc-prob prob-bull">35%</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-base">🟡 Base</span>
+        <span class="sc-range">1,600,000 ~ 2,000,000원</span>
+        <span class="sc-prob prob-base">50%</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-bear">🔴 Bear</span>
+        <span class="sc-range">1,200,000 ~ 1,500,000원</span>
+        <span class="sc-prob prob-bear">15%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk Table -->
+  <div class="section-title">주요 리스크 워치리스트</div>
+  <table class="risk-table">
+    <thead>
+      <tr>
+        <th>리스크</th>
+        <th>등급</th>
+        <th>영향 종목</th>
+        <th>내용</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>AI Capex 급감</strong></td>
+        <td><span class="risk-badge rb-high">높음</span></td>
+        <td>삼성·하이닉스 공통</td>
+        <td>빅테크 4사가 데이터센터 투자를 급감 시 HBM 주문 위축. 현재 확률 낮음.</td>
+      </tr>
+      <tr>
+        <td><strong>반도체 수출통제 강화</strong></td>
+        <td><span class="risk-badge rb-med">중간</span></td>
+        <td>삼성·하이닉스 공통</td>
+        <td>5/14~15 트럼프-시 정상회담에서 수출통제 강화 합의 시 중국 판매 위축. 저확률이나 모니터링 필요.</td>
+      </tr>
+      <tr>
+        <td><strong>삼성전자 노조 파업</strong></td>
+        <td><span class="risk-badge rb-high">높음</span></td>
+        <td>삼성전자 한정</td>
+        <td>5월 파업 장기화 시 DRAM 생산 최대 4% 차질(TrendForce 추정). 단기 뉴스 민감도 높음.</td>
+      </tr>
+      <tr>
+        <td><strong>HBM 공급 과잉 역설</strong></td>
+        <td><span class="risk-badge rb-med">중간</span></td>
+        <td>삼성·하이닉스 공통</td>
+        <td>HBM4 수율이 예상 이상으로 좋아지거나 빅테크 ASIC 개발 가속 시 2027 수요 증가 둔화 가능.</td>
+      </tr>
+      <tr>
+        <td><strong>CPI 서프라이즈 (4%+)</strong></td>
+        <td><span class="risk-badge rb-high">높음</span></td>
+        <td>단기 외국인 수급</td>
+        <td>5/12 CPI가 4% 이상이면 달러 강세·외국인 이탈로 두 종목 단기 조정. 그러나 펀더멘털 훼손 아님.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Summary -->
+  <div class="summary-box">
+    <div class="quote">
+      "삼성과 SK하이닉스는 AI 데이터센터 붐의 핵심 원자재를 <em>사실상 독점 공급</em>하고 있다.<br>
+      단기 이벤트로 흔들릴 수 있지만, <em>2027년까지의 구조적 수요는 이미 예약됐다.</em><br>
+      지금의 주가 레벨은 슈퍼사이클의 끝이 아닌, 중간 지점일 가능성이 높다."
+    </div>
+    <div class="attr">한국 반도체 심층 분석 · 2026년 5월 11일 · scribble26.netlify.app</div>
+  </div>
+
+</div>
+
+<footer>
+  이 콘텐츠는 공개 데이터를 기반으로 작성된 정보 제공 목적의 글입니다. 특정 자산의 매수·매도를 권고하지 않습니다.<br>
+  ⚙️ 자동 변환 생성 · 2026-05-11 | scribble26.netlify.app
+</footer>
+
+<script>
+// 1. 삼성 목표가 비교 Bar Chart
+const samsungCtx = document.getElementById('samsungTargetChart').getContext('2d');
+new Chart(samsungCtx, {
+  type: 'bar',
+  data: {
+    labels: ['현재가', '컨센서스\n평균', 'KB증권', '한투증권', '다올투자', 'SK증권\n(파격)'],
+    datasets: [{
+      label: '주가 (만원)',
+      data: [26.85, 31.4, 36.0, 33.0, 35.0, 50.0],
+      backgroundColor: ['#94a3b8', '#6366f1', '#6366f1', '#6366f1', '#6366f1', '#fbbf24'],
+      borderRadius: 8,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: false, min: 20, grid: { color: '#f1f5f9' }, ticks: { callback: v => v + '만원' } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+// 2. 반도체 수출 추이 Line Chart
+const exportCtx = document.getElementById('exportChart').getContext('2d');
+new Chart(exportCtx, {
+  type: 'line',
+  data: {
+    labels: ['2025 Q4\n평균', '1월', '2월', '3월', '4월'],
+    datasets: [{
+      label: '수출액 (억달러)',
+      data: [140, 210, 265, 328, 319],
+      borderColor: '#6366f1',
+      backgroundColor: 'rgba(99,102,241,0.1)',
+      tension: 0.4,
+      fill: true,
+      pointBackgroundColor: '#6366f1',
+      pointRadius: 5,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: false, min: 100, grid: { color: '#f1f5f9' }, ticks: { callback: v => '$' + v + 'B' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// 3. HBM 점유율 Doughnut Chart
+const hbmCtx = document.getElementById('hbmShareChart').getContext('2d');
+new Chart(hbmCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['SK하이닉스', '삼성전자', '마이크론'],
+    datasets: [{
+      data: [52, 40, 8],
+      backgroundColor: ['#f97316', '#1d4ed8', '#94a3b8'],
+      borderWidth: 0,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 16 } }
+    }
+  }
+});
+
+// 4. SK하이닉스 분기 OP Bar Chart
+const hynixCtx = document.getElementById('hynixOpChart').getContext('2d');
+new Chart(hynixCtx, {
+  type: 'bar',
+  data: {
+    labels: ['2024\nQ3', '2024\nQ4', '2025\nQ1', '2025\nQ2', '2025\nQ3', '2025\nQ4', '2026\nQ1'],
+    datasets: [{
+      label: '영업이익 (조원)',
+      data: [7.0, 8.1, 9.5, 14.2, 19.8, 26.3, 37.6],
+      backgroundColor: [
+        '#cbd5e1','#cbd5e1','#94a3b8','#94a3b8','#6366f1','#6366f1','#f97316'
+      ],
+      borderRadius: 8,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { callback: v => v + '조' } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
