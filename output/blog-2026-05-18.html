@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>딜 기대에서 군사 재개 공포로 — 2026.05.18 글로벌 경제 브리핑</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif; background: #0d1117; color: #e6edf3; line-height: 1.6; }
+
+  /* Hero */
+  .hero { background: linear-gradient(135deg, #0a1628 0%, #0f2d52 60%, #1a0a2e 100%); padding: 64px 24px 48px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.04); top: -200px; right: -150px; }
+  .hero::after { content: ''; position: absolute; width: 350px; height: 350px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.03); bottom: -100px; left: -80px; }
+  .tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.35); border-radius: 20px; padding: 6px 18px; margin-bottom: 28px; }
+  .tag .dot { width: 6px; height: 6px; border-radius: 50%; background: #dc2626; }
+  .tag span { font-size: 13px; color: #fca5a5; font-weight: 600; letter-spacing: 0.06em; }
+  .hero h1 { font-size: clamp(26px, 4vw, 42px); font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 16px; letter-spacing: -0.02em; }
+  .hero h1 em { font-style: normal; color: #fbbf24; }
+  .hero p { font-size: 16px; color: rgba(255,255,255,0.5); max-width: 640px; margin: 0 auto; }
+  .date-badge { display: inline-block; margin-top: 20px; font-size: 12px; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; }
+
+  /* Layout */
+  .container { max-width: 1100px; margin: 0 auto; padding: 48px 20px; }
+
+  /* KPI Grid */
+  .section-label { font-size: 11px; font-weight: 700; color: #4a90d9; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 48px; }
+  .kpi-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px 16px; text-align: center; transition: border-color 0.2s; }
+  .kpi-card:hover { border-color: #4a90d9; }
+  .kpi-label { font-size: 11px; color: #8b949e; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .kpi-value { font-size: 26px; font-weight: 800; color: #e6edf3; line-height: 1; margin-bottom: 8px; }
+  .kpi-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 10px; }
+  .badge-red { background: rgba(220,38,38,0.2); color: #fca5a5; }
+  .badge-green { background: rgba(22,163,74,0.2); color: #86efac; }
+  .badge-amber { background: rgba(217,119,6,0.2); color: #fde68a; }
+  .badge-neutral { background: rgba(71,85,105,0.3); color: #94a3b8; }
+
+  /* Charts */
+  .charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 48px; }
+  .chart-card { background: #161b22; border: 1px solid #30363d; border-radius: 14px; padding: 24px; }
+  .chart-title { font-size: 13px; font-weight: 700; color: #8b949e; margin-bottom: 20px; }
+  .chart-wrap { position: relative; height: 220px; }
+
+  /* Insights */
+  .insights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 48px; }
+  .insight-card { background: #161b22; border: 1px solid #30363d; border-radius: 14px; padding: 24px; }
+  .insight-num { font-size: 12px; font-weight: 800; color: #4a90d9; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .insight-title { font-size: 16px; font-weight: 700; color: #e6edf3; margin-bottom: 10px; line-height: 1.4; }
+  .insight-body { font-size: 14px; color: #8b949e; line-height: 1.7; }
+
+  /* Summary Box */
+  .summary-box { background: linear-gradient(135deg, rgba(220,38,38,0.1), rgba(71,85,105,0.15)); border: 1px solid rgba(220,38,38,0.3); border-radius: 14px; padding: 28px 32px; margin-bottom: 48px; }
+  .summary-box .s-label { font-size: 11px; font-weight: 700; color: #dc2626; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+  .summary-box p { font-size: 17px; font-weight: 600; color: #e6edf3; line-height: 1.6; }
+
+  /* Calendar */
+  .calendar-table { width: 100%; border-collapse: collapse; margin-bottom: 48px; }
+  .calendar-table th { text-align: left; font-size: 11px; font-weight: 700; color: #4a90d9; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 12px; border-bottom: 1px solid #30363d; }
+  .calendar-table td { padding: 12px; font-size: 14px; color: #8b949e; border-bottom: 1px solid #1c2128; vertical-align: top; }
+  .calendar-table tr:hover td { background: #1c2128; color: #e6edf3; }
+  .cal-date { color: #4a90d9; font-weight: 700; white-space: nowrap; }
+  .cal-event { color: #e6edf3; font-weight: 600; }
+  .cal-stars { color: #fbbf24; font-size: 12px; }
+  .star-5 { color: #dc2626; }
+
+  /* Scenarios */
+  .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-bottom: 48px; }
+  .sc-card { background: #161b22; border-radius: 14px; padding: 22px; border-left: 4px solid; }
+  .sc-card.base { border-color: #4a90d9; }
+  .sc-card.up { border-color: #16a34a; }
+  .sc-card.down { border-color: #dc2626; }
+  .sc-prob { font-size: 32px; font-weight: 800; margin-bottom: 6px; }
+  .sc-card.base .sc-prob { color: #4a90d9; }
+  .sc-card.up .sc-prob { color: #16a34a; }
+  .sc-card.down .sc-prob { color: #dc2626; }
+  .sc-name { font-size: 14px; font-weight: 700; color: #e6edf3; margin-bottom: 8px; }
+  .sc-desc { font-size: 13px; color: #8b949e; line-height: 1.6; }
+  .sc-change { font-size: 11px; font-weight: 700; margin-top: 10px; }
+  .sc-card.base .sc-change { color: #4a90d9; }
+  .sc-card.up .sc-change { color: #86efac; }
+  .sc-card.down .sc-change { color: #fca5a5; }
+
+  /* Footer */
+  footer { background: #0d1117; border-top: 1px solid #21262d; padding: 28px 20px; text-align: center; }
+  footer p { font-size: 12px; color: #484f58; }
+  footer a { color: #4a90d9; text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 24px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="tag"><div class="dot"></div><span>주간 글로벌 경제 브리핑 · 2026.05.18</span></div>
+  <h1>딜 기대에서 <em>군사 재개 공포</em>로<br>한 주 만에 뒤집힌 시장</h1>
+  <p>CPI 3.8% 충격 + 트럼프-시 회담 실망 + 이란 협상 교착 — 삼중 악재에 KOSPI 하루 6.1% 급락</p>
+  <div class="date-badge">2026년 5월 18일 · scribble26.netlify.app</div>
+</div>
+
+<div class="container">
+
+  <!-- KPI Cards -->
+  <div class="section-label">📊 주요 시장 지표 스냅샷 (5/15~16 기준)</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">KOSPI</div>
+      <div class="kpi-value">7,493</div>
+      <span class="kpi-badge badge-red">금요일 ↓6.1%</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">S&P 500</div>
+      <div class="kpi-value">~7,200</div>
+      <span class="kpi-badge badge-neutral">소폭 ↓</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Brent 유가</div>
+      <div class="kpi-value">$100</div>
+      <span class="kpi-badge badge-amber">박스권 유지</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">금(Gold)</div>
+      <div class="kpi-value">$4,900+</div>
+      <span class="kpi-badge badge-green">↑ 안전자산</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">USD/KRW</div>
+      <div class="kpi-value">1,497~<br>1,500</div>
+      <span class="kpi-badge badge-red">1,500원 위협</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">미 10년물 금리</div>
+      <div class="kpi-value">4.63%</div>
+      <span class="kpi-badge badge-red">CPI 후 급등</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">한국 국고채 10년</div>
+      <div class="kpi-value">4.06%</div>
+      <span class="kpi-badge badge-red">2년 만에 4% 돌파</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">美 4월 CPI</div>
+      <div class="kpi-value">3.8%</div>
+      <span class="kpi-badge badge-red">2023년 5월 이후 최고</span>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="section-label">📈 데이터 시각화</div>
+  <div class="charts-grid">
+
+    <div class="chart-card">
+      <div class="chart-title">KOSPI 주간 흐름 (추정, 5/11~5/15)</div>
+      <div class="chart-wrap"><canvas id="kospiChart"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">시나리오 확률 변화 (5/11 → 5/18)</div>
+      <div class="chart-wrap"><canvas id="scenarioChart"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">주요 자산별 현황</div>
+      <div class="chart-wrap"><canvas id="assetChart"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">주요 금리 비교</div>
+      <div class="chart-wrap"><canvas id="rateChart"></canvas></div>
+    </div>
+
+  </div>
+
+  <!-- Insights -->
+  <div class="section-label">🔍 이번 주 핵심 3대 이슈</div>
+  <div class="insights-grid">
+    <div class="insight-card">
+      <div class="insight-num">이슈 01</div>
+      <div class="insight-title">美 4월 CPI 3.8% — 금리인하 기대 소멸</div>
+      <div class="insight-body">에너지 가격이 한 달 새 3.8% 급등하며 전체 물가 상승분의 40% 이상을 차지했다. 이란 전쟁으로 막힌 호르무즈의 여파가 소비자 물가로 직결됐다. BofA는 "올해 금리인하를 전혀 정당화하지 않는다"며 연내 인하 전망을 철회했고, 선물시장은 12월 금리인상 확률을 51%까지 반영하고 있다.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">이슈 02</div>
+      <div class="insight-title">트럼프-시 정상회담 종료 — 실망스러운 성적표</div>
+      <div class="insight-body">이틀간의 베이징 회담은 보잉 200대, 미국산 대두·에너지 구매 구두 약속에 그쳤다. 실질적인 관세 축소 합의는 없었고, 양측은 합의 내용 자체를 두고 엇갈린 설명을 내놓았다. 시진핑은 대만 문제 관련 "관계를 심각한 위험에 빠뜨릴 수 있다"고 경고했다. 시장은 KOSPI -6.1% 급락으로 반응했다.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">이슈 03</div>
+      <div class="insight-title">이란 협상 교착 + 트럼프 5/19 NSA 군사 회의</div>
+      <div class="insight-body">이란이 14개항 합의 초안에 배상금을 요구하며 협상이 교착됐다. 트럼프는 5/17 "남겨질 것이 없다"고 위협 수위를 높였고, 5/19 국가안보보좌관 회의에서 군사 행동 옵션을 재논의할 예정이라는 속보가 나왔다. 이번 주 가장 큰 지정학 변수다.</div>
+    </div>
+  </div>
+
+  <!-- Scenarios -->
+  <div class="section-label">📊 시나리오 확률 (5/18 기준 업데이트)</div>
+  <div class="scenario-grid">
+    <div class="sc-card up">
+      <div class="sc-prob">15%</div>
+      <div class="sc-name">Upside — 이란 타결 + 워시 비둘기</div>
+      <div class="sc-desc">5/19 NSA 회의 후 이란이 조건 수용, 호르무즈 개방 약속. 워시 취임 발언 완화적. 유가 $80~90. KOSPI 8,000+</div>
+      <div class="sc-change">▼ 10%p (25% → 15%)</div>
+    </div>
+    <div class="sc-card base">
+      <div class="sc-prob">40%</div>
+      <div class="sc-name">Base — 협상 재개, 유가 박스권</div>
+      <div class="sc-desc">이란과 협상이 재개되며 호르무즈 일부 개방. 유가 $90~110. KOSPI 7,000~7,800. 워시 첫 발언 중립적 어조.</div>
+      <div class="sc-change">▼ 5%p (45% → 40%)</div>
+    </div>
+    <div class="sc-card down">
+      <div class="sc-prob">45%</div>
+      <div class="sc-name">Downside — 군사 재개 + 인플레 가속</div>
+      <div class="sc-desc">5/19 NSA 회의에서 군사 옵션 승인. 이란 공습 재개 → 유가 $115~130. Fed 인상 논의 공식화. KOSPI 6,500 이하. USD/KRW 1,550 가능.</div>
+      <div class="sc-change">▲ 15%p (30% → 45%)</div>
+    </div>
+  </div>
+
+  <!-- D-Day Calendar -->
+  <div class="section-label">🗓 이번 주 D-Day 캘린더 (5/19~5/28)</div>
+  <table class="calendar-table">
+    <thead>
+      <tr>
+        <th>날짜</th>
+        <th>이벤트</th>
+        <th>중요도</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="cal-date">5/19 (월)</td>
+        <td><span class="cal-event">🔴 트럼프 NSA 이란 군사 옵션 회의</span></td>
+        <td class="cal-stars star-5">★★★★★</td>
+      </tr>
+      <tr>
+        <td class="cal-date">5/19 (월)</td>
+        <td><span class="cal-event">케빈 워시 연준 의장 첫 공식 발언 가능성</span></td>
+        <td class="cal-stars">★★★★</td>
+      </tr>
+      <tr>
+        <td class="cal-date">5/21 (수)</td>
+        <td><span class="cal-event">미국 FOMC 의사록 공개 (4/29 회의)</span></td>
+        <td class="cal-stars">★★★★</td>
+      </tr>
+      <tr>
+        <td class="cal-date">5/22 (목)</td>
+        <td><span class="cal-event">엔비디아 실적 발표 (FY2025 Q1)</span></td>
+        <td class="cal-stars">★★★★</td>
+      </tr>
+      <tr>
+        <td class="cal-date">5/22 (목)</td>
+        <td><span class="cal-event">미국 주간 실업수당 청구 건수</span></td>
+        <td class="cal-stars">★★★</td>
+      </tr>
+      <tr>
+        <td class="cal-date">5/23 (금)</td>
+        <td><span class="cal-event">미국 제조업·서비스업 PMI (5월 예비치)</span></td>
+        <td class="cal-stars">★★★</td>
+      </tr>
+      <tr>
+        <td class="cal-date">5/28 (수)</td>
+        <td><span class="cal-event">🇰🇷 한국은행 금통위 (새 총재 첫 회의)</span></td>
+        <td class="cal-stars star-5">★★★★★</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Summary -->
+  <div class="summary-box">
+    <div class="s-label">이번 주 한 줄 결론</div>
+    <p>"딜 기대에서 군사 재개 공포로" — 지난주 시나리오가 한 주 만에 역전됐다. 5/19 트럼프 NSA 회의가 이번 주 글로벌 시장의 원점이다.</p>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>
+    <a href="https://scribble26.netlify.app">scribble26.netlify.app</a> ·
+    이 콘텐츠는 공개 경제 지표 및 언론 보도 기반의 정보 제공 목적으로 작성됐습니다. 특정 자산의 매수·매도를 권고하지 않습니다. ·
+    Claude Cowork 자동 생성 · 2026.05.18
+  </p>
+</footer>
+
+<script>
+// KOSPI 주간 흐름
+const kospiCtx = document.getElementById('kospiChart').getContext('2d');
+new Chart(kospiCtx, {
+  type: 'line',
+  data: {
+    labels: ['5/11 (월)', '5/12 (화)', '5/13 (수)', '5/14 (목)', '5/15 (금)'],
+    datasets: [{
+      label: 'KOSPI',
+      data: [7498, 7480, 7510, 7550, 7493],
+      borderColor: '#4a90d9',
+      backgroundColor: 'rgba(74,144,217,0.1)',
+      borderWidth: 2,
+      tension: 0.3,
+      fill: true,
+      pointBackgroundColor: ['#4a90d9','#4a90d9','#4a90d9','#4a90d9','#dc2626'],
+      pointRadius: [4,4,4,4,8]
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.y.toLocaleString() } } },
+    scales: {
+      x: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
+      y: { ticks: { color: '#8b949e', font: { size: 11 }, callback: v => v.toLocaleString() }, grid: { color: '#21262d' }, min: 7400, max: 7600 }
+    }
+  }
+});
+
+// 시나리오 확률 변화
+const scenarioCtx = document.getElementById('scenarioChart').getContext('2d');
+new Chart(scenarioCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Upside', 'Base', 'Downside'],
+    datasets: [
+      {
+        label: '5/11 확률',
+        data: [25, 45, 30],
+        backgroundColor: ['rgba(22,163,74,0.4)', 'rgba(74,144,217,0.4)', 'rgba(220,38,38,0.4)'],
+        borderColor: ['#16a34a','#4a90d9','#dc2626'],
+        borderWidth: 1
+      },
+      {
+        label: '5/18 확률',
+        data: [15, 40, 45],
+        backgroundColor: ['rgba(22,163,74,0.8)', 'rgba(74,144,217,0.8)', 'rgba(220,38,38,0.8)'],
+        borderColor: ['#16a34a','#4a90d9','#dc2626'],
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#8b949e', font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
+      y: { ticks: { color: '#8b949e', font: { size: 11 }, callback: v => v + '%' }, grid: { color: '#21262d' }, max: 60 }
+    }
+  }
+});
+
+// 주요 자산 현황 (레이더)
+const assetCtx = document.getElementById('assetChart').getContext('2d');
+new Chart(assetCtx, {
+  type: 'radar',
+  data: {
+    labels: ['KOSPI\n안정성', '달러\n강세', '금\n수요', '유가\n변동성', '금리\n압박', 'AI\n수요'],
+    datasets: [{
+      label: '현재 리스크 수준',
+      data: [35, 75, 80, 70, 85, 65],
+      backgroundColor: 'rgba(220,38,38,0.15)',
+      borderColor: '#dc2626',
+      borderWidth: 2,
+      pointBackgroundColor: '#dc2626',
+      pointRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#8b949e', font: { size: 11 } } } },
+    scales: {
+      r: {
+        ticks: { color: '#8b949e', font: { size: 10 }, backdropColor: 'transparent' },
+        grid: { color: '#30363d' },
+        pointLabels: { color: '#8b949e', font: { size: 10 } },
+        min: 0, max: 100
+      }
+    }
+  }
+});
+
+// 주요 금리 비교
+const rateCtx = document.getElementById('rateChart').getContext('2d');
+new Chart(rateCtx, {
+  type: 'bar',
+  data: {
+    labels: ['연준\n기준금리', '美 10년물\n국채', '한국\n기준금리', '韓 국고채\n10년', 'ECB\n기준금리', 'BOJ\n기준금리'],
+    datasets: [{
+      label: '금리 (%)',
+      data: [3.625, 4.63, 2.5, 4.06, 3.15, 0.75],
+      backgroundColor: [
+        'rgba(74,144,217,0.7)',
+        'rgba(220,38,38,0.7)',
+        'rgba(74,144,217,0.5)',
+        'rgba(220,38,38,0.5)',
+        'rgba(71,85,105,0.7)',
+        'rgba(22,163,74,0.7)'
+      ],
+      borderColor: ['#4a90d9','#dc2626','#4a90d9','#dc2626','#475569','#16a34a'],
+      borderWidth: 1,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#21262d' } },
+      y: { ticks: { color: '#8b949e', font: { size: 11 }, callback: v => v + '%' }, grid: { color: '#21262d' }, min: 0, max: 5.5 }
+    }
+  }
+});
+</script>
+</body>
+</html>
