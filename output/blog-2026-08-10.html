@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>고용은 무너졌는데 증시는 웃었다 — 2026.08.10</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    background: #f0f4f8;
+    color: #1a202c;
+    line-height: 1.6;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0a1628 0%, #0f2d52 60%, #0a1f3d 100%);
+    color: white;
+    padding: 64px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.05);
+    top: -200px; right: -150px;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(220,38,38,0.18);
+    border: 1px solid rgba(220,38,38,0.4);
+    border-radius: 20px; padding: 6px 18px;
+    font-size: 13px; color: #fca5a5; font-weight: 600;
+    letter-spacing: 0.06em; margin-bottom: 24px;
+  }
+  .hero-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: #dc2626; }
+  .hero h1 {
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 800; line-height: 1.3;
+    margin-bottom: 16px; max-width: 780px; margin-left: auto; margin-right: auto;
+  }
+  .hero h1 em { font-style: normal; color: #fbbf24; }
+  .hero .sub {
+    font-size: 15px; color: rgba(255,255,255,0.5);
+    max-width: 660px; margin: 0 auto 12px;
+  }
+  .hero .date-tag {
+    font-size: 13px; color: rgba(255,255,255,0.3);
+    margin-top: 8px; letter-spacing: 0.04em;
+  }
+
+  /* Container */
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+
+  /* Section title */
+  .section-title {
+    font-size: 13px; font-weight: 700; color: #64748b;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 16px; margin-top: 48px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px; background: #e2e8f0;
+  }
+
+  /* KPI Grid */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px; margin-bottom: 8px;
+  }
+  .kpi-card {
+    background: white; border-radius: 14px;
+    padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border-left: 4px solid transparent;
+  }
+  .kpi-card.red { border-left-color: #dc2626; }
+  .kpi-card.green { border-left-color: #16a34a; }
+  .kpi-card.neutral { border-left-color: #475569; }
+  .kpi-card.amber { border-left-color: #d97706; }
+  .kpi-label { font-size: 11px; color: #94a3b8; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .kpi-value { font-size: 26px; font-weight: 800; color: #0f172a; line-height: 1; margin-bottom: 6px; }
+  .kpi-change {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    padding: 3px 10px; border-radius: 10px;
+  }
+  .kpi-change.down { color: #dc2626; background: rgba(220,38,38,0.1); }
+  .kpi-change.up-bad { color: #dc2626; background: rgba(220,38,38,0.1); }
+  .kpi-change.up-good { color: #16a34a; background: rgba(22,163,74,0.1); }
+  .kpi-change.neutral-c { color: #475569; background: rgba(71,85,105,0.1); }
+
+  /* Charts */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px; margin-bottom: 8px;
+  }
+  .chart-card {
+    background: white; border-radius: 14px;
+    padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .chart-card h3 {
+    font-size: 14px; font-weight: 700; color: #475569;
+    margin-bottom: 16px; letter-spacing: 0.02em;
+  }
+  .chart-wrap { position: relative; height: 220px; }
+
+  /* Text blocks */
+  .insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px; margin-bottom: 8px;
+  }
+  .insight-card {
+    background: white; border-radius: 14px;
+    padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .insight-num {
+    font-size: 11px; font-weight: 800; color: #dc2626;
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .insight-card h3 { font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 10px; line-height: 1.4; }
+  .insight-card p { font-size: 14px; color: #475569; line-height: 1.7; }
+
+  /* Summary box */
+  .summary-box {
+    background: linear-gradient(135deg, #0a1628, #1e3a5f);
+    border-radius: 16px; padding: 32px;
+    color: white; text-align: center; margin: 8px 0;
+    box-shadow: 0 4px 16px rgba(10,22,40,0.2);
+  }
+  .summary-box .label {
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .summary-box p {
+    font-size: 18px; font-weight: 700; line-height: 1.65;
+    color: #fff;
+  }
+  .summary-box em { font-style: normal; color: #fbbf24; }
+
+  /* Calendar table */
+  .calendar-table {
+    width: 100%; border-collapse: collapse;
+    background: white; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .calendar-table th {
+    background: #0f172a; color: white;
+    padding: 12px 16px; font-size: 12px;
+    font-weight: 700; text-align: left; letter-spacing: 0.04em;
+  }
+  .calendar-table td {
+    padding: 12px 16px; font-size: 13px;
+    border-bottom: 1px solid #f1f5f9; color: #334155;
+  }
+  .calendar-table tr:last-child td { border-bottom: none; }
+  .calendar-table tr:hover td { background: #f8fafc; }
+  .stars { color: #dc2626; font-weight: 700; }
+
+  /* Footer */
+  footer {
+    text-align: center; padding: 32px;
+    font-size: 12px; color: #94a3b8;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 32px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-tag"><div class="dot"></div>주간 글로벌 경제 브리핑 · 2026.08.10</div>
+  <h1>고용은 무너졌는데 증시는 웃었다<br><em>그 사이 SK하이닉스는 이틀 연속 주저앉았다</em></h1>
+  <p class="sub">8/6 샌디스크 실적 가이던스 실망 → SK하이닉스 이틀 연속 급락, 코스피 사이드카 발동 · 8/7 미국 7월 고용쇼크(-2.3만 명)에도 S&P500 사상 최고치 · 이란-오만 호르무즈 협상은 여전히 낙관과 교착 사이</p>
+  <p class="date-tag">2026년 8월 3일~8월 10일 · scribble26.netlify.app</p>
+</div>
+
+<div class="container">
+
+  <!-- KPI Cards -->
+  <div class="section-title">📊 이번 주 시장 스냅샷</div>
+  <div class="kpi-grid">
+    <div class="kpi-card red">
+      <div class="kpi-label">SK하이닉스(8/6)</div>
+      <div class="kpi-value">-10.37%</div>
+      <span class="kpi-change up-bad">▼ 샌디스크發 충격, 이틀 연속 급락</span>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">코스피(8/6)</div>
+      <div class="kpi-value">6,296.38</div>
+      <span class="kpi-change up-bad">▼ -4.58%, 올해 24번째 매도 사이드카</span>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">美 7월 비농업고용</div>
+      <div class="kpi-value">-23,000명</div>
+      <span class="kpi-change neutral-c">→ 예상 대폭 하회, 5~6월도 하향 조정</span>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">S&P500(8/7)</div>
+      <div class="kpi-value">7,757.64</div>
+      <span class="kpi-change up-good">▲ 사상 최고치, 주간 +3.6%</span>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">나스닥(8/7)</div>
+      <div class="kpi-value">26,690.62</div>
+      <span class="kpi-change up-good">▲ 주간 +5.2%</span>
+    </div>
+    <div class="kpi-card neutral">
+      <div class="kpi-label">WTI 유가</div>
+      <div class="kpi-value">~$78.18</div>
+      <span class="kpi-change neutral-c">→ 주중 -7%→재반등 롤러코스터</span>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">원/달러</div>
+      <div class="kpi-value">~1,422원</div>
+      <span class="kpi-change up-good">▲ 원화 강세, 7/27 대비 약 3.1%</span>
+    </div>
+    <div class="kpi-card neutral">
+      <div class="kpi-label">미 10년물</div>
+      <div class="kpi-value">4.6%</div>
+      <span class="kpi-change neutral-c">→ -7bp, 9월 인하 기대 반영</span>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="section-title">📈 주요 차트</div>
+  <div class="chart-grid">
+
+    <!-- KOSPI rollercoaster -->
+    <div class="chart-card">
+      <h3>📉 코스피 이번 주 롤러코스터 (8/5 → 8/10)</h3>
+      <div class="chart-wrap">
+        <canvas id="kospiChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Semiconductor shock -->
+    <div class="chart-card">
+      <h3>💾 샌디스크發 메모리·반도체주 동반 급락</h3>
+      <div class="chart-wrap">
+        <canvas id="semiChart"></canvas>
+      </div>
+    </div>
+
+    <!-- US indices weekly -->
+    <div class="chart-card">
+      <h3>🇺🇸 미국 3대 지수 주간 상승률</h3>
+      <div class="chart-wrap">
+        <canvas id="usChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Scenario probability -->
+    <div class="chart-card">
+      <h3>📌 시나리오 확률 (직전 8/3 → 이번 주 8/10)</h3>
+      <div class="chart-wrap">
+        <canvas id="scenarioChart"></canvas>
+      </div>
+    </div>
+
+    <!-- KRW -->
+    <div class="chart-card">
+      <h3>💱 원/달러 환율 흐름 (7/27 → 8/10)</h3>
+      <div class="chart-wrap">
+        <canvas id="krwChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 3 Key insights -->
+  <div class="section-title">💡 이번 주 핵심 이슈 3가지</div>
+  <div class="insight-grid">
+    <div class="insight-card">
+      <div class="insight-num">ISSUE 01 — 샌디스크發 메모리 쇼크</div>
+      <h3>실적은 좋았는데 전망이 실망스러웠던 하루, 태평양을 건넜다</h3>
+      <p>미국 메모리 업체 샌디스크가 예상을 웃도는 실적에도 실망스러운 매출 전망을 내놓자 "AI 메모리 수요 모멘텀이 예상만큼 강하지 않을 수 있다"는 우려가 확산됐다. 실적·전망 모두 양호했던 웨스턴디지털조차 주가가 급락했고, 이 충격은 곧바로 아시아로 전이돼 SK하이닉스가 이틀 연속 급락, 삼성전자도 동반 하락했다. 코스피는 하루 만에 큰 폭으로 밀리며 올해 24번째 매도 사이드카가 발동됐다. 앞서 사상 최대 실적을 낸 AMD조차 시간외에서 크게 흔들렸는데, 실적 부족이 아니라 이미 주가에 반영된 눈높이가 너무 높았기 때문이라는 해석이다.</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">ISSUE 02 — "나쁜 뉴스가 좋은 뉴스"</div>
+      <h3>미국 고용쇼크에도 S&P500은 사상 최고치를 새로 썼다</h3>
+      <p>미국 7월 비농업고용이 시장 예상을 완전히 벗어나 감소했고, 5~6월분도 큰 폭으로 하향 조정됐다. 명백한 고용 둔화 신호였지만 시장은 이를 "연준의 9월 금리 인하가 사실상 확정적"이라는 신호로 받아들였고, S&P500·나스닥·다우가 나란히 랠리하며 주간 기준 2주 연속 강세장이 펼쳐졌다. 미 10년물 금리는 하락했고 변동성 지수도 안정권을 유지했다.</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">ISSUE 03 — 호르무즈, 낙관과 교착 사이</div>
+      <h3>확전은 없었지만 완전한 타결도 아직이다</h3>
+      <p>지난주와 같은 군사적 확전은 이번 주 관찰되지 않았고, 이란과 오만 사이의 임시 항로 협상이 이어졌다. 다만 이란이 공개한 초안 내용을 둘러싼 반발로 협상이 한때 정체됐고, 유가는 주 초반 크게 하락했다가 재반등하는 등 방향성이 여전히 불안정했다. 발언과 실제 문서화 사이의 간극을 계속 구분해서 지켜볼 필요가 있는 국면이다.</p>
+    </div>
+  </div>
+
+  <!-- D-Day calendar -->
+  <div class="section-title">🗓 향후 핵심 일정 (8/10~9월 중순)</div>
+  <table class="calendar-table">
+    <thead>
+      <tr>
+        <th>날짜</th>
+        <th>이벤트</th>
+        <th>중요도</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>8/10 (월, 오늘)</strong></td>
+        <td>코스피 +0.76% 상승 출발 / 이란-오만 호르무즈 협상 추이 지속 주시</td>
+        <td><span class="stars">★★★★</span></td>
+      </tr>
+      <tr>
+        <td><strong>8/12 (수)</strong></td>
+        <td>미국 7월 CPI 발표 — 9월 FOMC 인하 기대의 최대 분수령</td>
+        <td><span class="stars">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td><strong>8/13 (목)</strong></td>
+        <td>미국 7월 PPI 발표 / 호르무즈 임시 항로 협상 추가 진전 여부</td>
+        <td><span class="stars">★★★★</span></td>
+      </tr>
+      <tr>
+        <td><strong>8/14 (금)</strong></td>
+        <td>미국 소매판매·수입물가 등 보조 지표, EIA 원유재고</td>
+        <td><span class="stars">★★★</span></td>
+      </tr>
+      <tr>
+        <td><strong>8/16 (일)</strong></td>
+        <td>미국 건축허가·주택착공·미시간대 소비자심리지수(예비치)</td>
+        <td><span class="stars">★★</span></td>
+      </tr>
+      <tr>
+        <td><strong>8/27 (전망)</strong></td>
+        <td>한국은행 금통위 — 매파적 동결 유력, 소수의견 여부 주시</td>
+        <td><span class="stars">★★★★</span></td>
+      </tr>
+      <tr>
+        <td><strong>9/15~16 (전망)</strong></td>
+        <td>다음 FOMC — 9월 인하 여부 결정, CPI·PPI가 핵심 선행지표</td>
+        <td><span class="stars">★★★★★</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Summary -->
+  <div class="section-title">✍️ 한 줄 결론</div>
+  <div class="summary-box">
+    <div class="label">Weekly Summary · 2026.08.10</div>
+    <p>고용 지표는 무너졌지만 미국 증시는 <em>사상 최고치</em>로 웃었고, 그 사이 한국 반도체는 태평양 건너 실적 전망 하나에 이틀 연속 흔들렸다.<br>
+    지정학 리스크는 총성 대신 협상 테이블로 옮겨갔지만, 시장의 진짜 변수는 이미 다른 곳으로 이동했다.</p>
+  </div>
+
+</div>
+
+<footer>
+  본 콘텐츠는 공개 데이터를 바탕으로 작성된 정보 제공 목적 글입니다. 특정 자산의 매수·매도를 권고하지 않습니다.<br>
+  scribble26.netlify.app · 2026.08.10
+</footer>
+
+<script>
+// Chart 1: KOSPI rollercoaster
+const ctx0 = document.getElementById('kospiChart').getContext('2d');
+new Chart(ctx0, {
+  type: 'bar',
+  data: {
+    labels: ['8/5\n(+3.76%)', '8/6\n(-4.58%)', '8/7\n(-0.60%)', '8/10\n(+0.76%, 개장)'],
+    datasets: [{
+      label: 'KOSPI 등락률(%)',
+      data: [3.76, -4.58, -0.60, 0.76],
+      backgroundColor: ['#16a34a', '#dc2626', '#dc2626', '#16a34a'],
+      borderRadius: 6,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: {
+        ticks: { callback: v => v + '%', font: { size: 10 } },
+        grid: { color: 'rgba(0,0,0,0.06)' }
+      },
+      x: { ticks: { font: { size: 9 } } }
+    }
+  }
+});
+
+// Chart 2: Semiconductor shock
+const ctx1 = document.getElementById('semiChart').getContext('2d');
+new Chart(ctx1, {
+  type: 'bar',
+  data: {
+    labels: ['SK하이닉스\n(8/6)', '삼성전자\n(8/6)', '웨스턴디지털\n(8/6)', 'AMD\n(시간외)'],
+    datasets: [{
+      label: '주가 변화율 (%)',
+      data: [-10.37, -6, -15, -8],
+      backgroundColor: ['#dc2626', '#dc2626', '#dc2626', '#dc2626'],
+      borderRadius: 6,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: {
+        ticks: { callback: v => v + '%', font: { size: 10 } },
+        grid: { color: 'rgba(0,0,0,0.06)' }
+      },
+      x: { ticks: { font: { size: 9 } } }
+    }
+  }
+});
+
+// Chart 3: US indices weekly
+const ctx2 = document.getElementById('usChart').getContext('2d');
+new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels: ['S&P500', '나스닥', '다우'],
+    datasets: [{
+      label: '주간 상승률 (%)',
+      data: [3.6, 5.2, 3.0],
+      backgroundColor: ['#16a34a', '#16a34a', '#16a34a'],
+      borderRadius: 6,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: {
+        ticks: { callback: v => '+' + v + '%', font: { size: 10 } },
+        grid: { color: 'rgba(0,0,0,0.06)' }
+      },
+      x: { ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// Chart 4: Scenario probability (before vs after)
+const ctx3 = document.getElementById('scenarioChart').getContext('2d');
+new Chart(ctx3, {
+  type: 'bar',
+  data: {
+    labels: ['Base', 'Upside', 'Downside'],
+    datasets: [
+      {
+        label: '직전 (8/3)',
+        data: [43, 12, 45],
+        backgroundColor: ['rgba(71,85,105,0.5)', 'rgba(22,163,74,0.5)', 'rgba(220,38,38,0.5)'],
+        borderColor: ['#475569', '#16a34a', '#dc2626'],
+        borderWidth: 1.5
+      },
+      {
+        label: '이번 주 (8/10)',
+        data: [50, 15, 35],
+        backgroundColor: ['rgba(71,85,105,0.85)', 'rgba(22,163,74,0.85)', 'rgba(220,38,38,0.85)'],
+        borderColor: ['#475569', '#16a34a', '#dc2626'],
+        borderWidth: 1.5
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { font: { size: 11 } } } },
+    scales: {
+      y: {
+        beginAtZero: true, max: 60,
+        ticks: { callback: v => v + '%', font: { size: 11 } },
+        grid: { color: 'rgba(0,0,0,0.06)' }
+      },
+      x: { ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// Chart 5: KRW/USD
+const ctx4 = document.getElementById('krwChart').getContext('2d');
+new Chart(ctx4, {
+  type: 'line',
+  data: {
+    labels: ['7/27\n(직전 리포트)', '8/10\n(이번 주)'],
+    datasets: [{
+      label: '원/달러 환율 (원)',
+      data: [1468.15, 1422],
+      borderColor: '#16a34a',
+      backgroundColor: 'rgba(22,163,74,0.1)',
+      borderWidth: 2.5,
+      tension: 0.25,
+      pointBackgroundColor: '#16a34a',
+      pointRadius: 5,
+      fill: true
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: {
+        ticks: { callback: v => v + '원', font: { size: 10 } },
+        grid: { color: 'rgba(0,0,0,0.06)' }
+      },
+      x: { ticks: { font: { size: 10 } } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
